@@ -1084,7 +1084,7 @@
       }
     }
 
-    // ==================== UPDATED PDF GENERATION ====================
+    // ==================== UPDATED PDF GENERATION (FIX APPLIED) ====================
     async function generatePDF() {
       if (!validateForm()) return;
 
@@ -1143,6 +1143,10 @@
         } else {
           finalY = 85 + (data.products.length * 10) + 20;
         }
+
+        // ---- FIX: enforce Helvetica and zero character spacing ----
+        doc.setFont('helvetica', 'normal');
+        doc.setCharSpace(0);
 
         doc.setFontSize(11);
         doc.text(`Subtotal: ${data.totals.subtotal}`, 140, finalY);
