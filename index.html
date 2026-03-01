@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ASPIRANT · AI Invoice Generator</title>
+  <!-- Google Fonts & Font Awesome -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <!-- jsPDF & autoTable -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- STICKY HEADER -->
+  <header class="sticky-header">
+    <div class="header-left">ASPIRANT</div>
+    <div class="header-right">
+      <div class="invoice-number-group">
+        <input type="text" id="invoiceNumber" value="INV-2026-001" placeholder="INV-2026-001">
+        <button id="refreshInvoice" class="icon-btn" title="Generate next invoice number"><i class="fas fa-sync-alt"></i></button>
+      </div>
+      <input type="date" id="invoiceDate">
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- CUSTOMER DETAILS CARD -->
+    <section class="card">
+      <h2><i class="fas fa-user"></i> Customer Details</h2>
+      <div class="grid-2">
+        <div class="field">
+          <label>Full Name *</label>
+          <input type="text" id="customerName" placeholder="Customer name.." list="customerSuggest">
+          <datalist id="customerSuggest"></datalist>
+        </div>
+        <div class="field">
+          <label>Email</label>
+          <input type="email" id="customerEmail" placeholder="Enter e-mail ID">
+        </div>
+        <div class="field">
+          <label>Phone</label>
+          <input type="tel" id="customerPhone" placeholder="Phone Number">
+        </div>
+        <div class="field full-width">
+          <label>Address</label>
+          <input type="text" id="customerAddress" placeholder="Address">
+        </div>
+      </div>
+    </section>
+
+    <!-- PRODUCT DETAILS CARD -->
+    <section class="card">
+      <h2><i class="fas fa-box"></i> Product Details</h2>
+      <div id="productRowsContainer"></div>
+      <button id="addProductRow" class="btn-secondary"><i class="fas fa-plus"></i> Add Item</button>
+    </section>
+
+    <!-- BUSINESS DETAILS CARD -->
+    <section class="card">
+      <h2><i class="fas fa-building"></i> Business Details</h2>
+      <div class="grid-2">
+        <div class="field">
+          <label>Business Name *</label>
+          <input type="text" id="businessName" placeholder="ASPIRANT" value="ASPIRANT">
+        </div>
+        <div class="field">
+          <label>Address</label>
+          <input type="text" id="businessAddress" value="SuryaSen Colony Block-F, Siliguri, 734007">
+        </div>
+        <div class="field">
+          <label>Phone</label>
+          <input type="tel" id="businessPhone" value="+91 8927956691">
+        </div>
+        <div class="field">
+          <label>Logo</label>
+          <input type="file" id="logoUpload" accept="image/*">
+          <div id="logoPreview" class="logo-preview"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SUMMARY CARD (highlighted) -->
+    <section class="card summary-card">
+      <h2><i class="fas fa-calculator"></i> Summary</h2>
+      <div class="summary-grid">
+        <div><span>Subtotal:</span> <strong id="subtotal">₹0.00</strong></div>
+        <div><span>Total GST:</span> <strong id="totalGST">₹0.00</strong></div>
+        <div><span>Total Discount:</span> <strong id="totalDiscount">₹0.00</strong></div>
+        <div class="grand-total"><span>Grand Total:</span> <span id="grandTotal">₹0.00</span></div>
+      </div>
+    </section>
+
+    <!-- SHARE & ACTIONS -->
+    <section class="card share-card">
+      <h2><i class="fas fa-share-alt"></i> Share Invoice</h2>
+      <div class="share-row">
+        <input type="email" id="shareEmail" placeholder="client@example.com">
+        <button id="gmailShareBtn" class="btn-gmail"><i class="fab fa-google"></i> Gmail</button>
+      </div>
+      <div class="share-row">
+        <input type="text" id="shareWhatsApp" placeholder="+91 customer number">
+        <button id="whatsappShareBtn" class="btn-whatsapp"><i class="fab fa-whatsapp"></i> WhatsApp</button>
+      </div>
+      <div class="action-buttons">
+        <button id="previewBtn" class="btn-primary"><i class="fas fa-eye"></i> Preview</button>
+        <button id="downloadPdfBtn" class="btn-primary"><i class="fas fa-download"></i> Download PDF</button>
+      </div>
+    </section>
+
+    <!-- PREVIEW MODAL (hidden by default) -->
+    <div id="previewModal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <div id="previewContent"></div>
+        <div style="text-align: right; margin-top: 1.5rem;">
+          <button id="modalDownloadPdf" class="btn-primary">Download PDF</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+      <p>© 2026 ASPIRANT · Professional AI Invoice Generator</p>
+    </footer>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
